@@ -11,12 +11,11 @@ import org.http4s.syntax.all._
 import org.http4s.circe._
 import org.http4s.dsl.request._
 import io.circe._
-import epollcat.EpollApp
 import fs2.io.net.Network
-import fs2.io.net.tls.S2nConfig
-import fs2.io.net.tls.TLSContext
 
-object EmberExample extends EpollApp {
+object EmberExample extends IOApp {
+
+  override def computeWorkerThreadCount = 1
 
   final case class Joke(joke: String)
   object Joke {
@@ -25,9 +24,8 @@ object EmberExample extends EpollApp {
       jsonOf
   }
 
-  def run(args: List[String]): IO[ExitCode] = customTLS
-    .flatMap(createClient)
-    .use{ client =>
+  def run(args: List[String]): IO[ExitCode] = createClient
+    .use { client =>
       createServer(client).useForever
     }.as(ExitCode.Success)
 
@@ -51,20 +49,12 @@ object EmberExample extends EpollApp {
     client.expect[Joke](Request(Method.GET, uri"https://icanhazdadjoke.com/"))
       .map(_.joke)
 
-  def createClient(tlsContext: TLSContext[IO]): Resource[IO, Client[IO]] = {
+  def createClient: Resource[IO, Client[IO]] = {
     EmberClientBuilder
       .default[IO]
-      .withTLSContext(tlsContext)
       .withHttp2
       .build
   }
-
-  // TLS 1.3 is not supported without a different default
-  def customTLS =
-    S2nConfig.builder
-      .withCipherPreferences("default_tls13")
-      .build[IO]
-      .map(Network[IO].tlsContext.fromS2nConfig(_))
 
 }
 
