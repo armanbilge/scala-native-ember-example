@@ -11,12 +11,13 @@ import org.http4s.syntax.all._
 import org.http4s.circe._
 import org.http4s.dsl.request._
 import io.circe._
-import epollcat.EpollApp
 import fs2.io.net.Network
 import fs2.io.net.tls.S2nConfig
 import fs2.io.net.tls.TLSContext
+import fs2.io.uring.UringApp
+import fs2.io.uring.net.UringSocketGroup
 
-object EmberExample extends EpollApp {
+object EmberExample extends UringApp {
 
   final case class Joke(joke: String)
   object Joke {
@@ -34,6 +35,7 @@ object EmberExample extends EpollApp {
 
   def createServer(client: Client[IO]): Resource[IO, Unit] =
     EmberServerBuilder.default[IO]
+      .withSocketGroup(UringSocketGroup[IO])
       .withHttp2
       .withHttpApp(app(client).orNotFound)
       .build
