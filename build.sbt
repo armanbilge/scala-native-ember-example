@@ -10,7 +10,7 @@ name := "Scala Native Ember Example"
 resolvers ++= Resolver.sonatypeOssRepos("snapshots")
 libraryDependencies ++= Seq(
   "com.armanbilge" %%% "epollcat" % "0.1.1", // vesitigial
-  "com.armanbilge" %%% "fs2-io_uring" % "0.0-23217d8-SNAPSHOT", // Runtime
+  "com.armanbilge" %%% "fs2-io_uring" % "0.0-d40fc4d-SNAPSHOT", // Runtime
   "org.http4s" %%% "http4s-ember-client" % "0.23.16",
   "org.http4s" %%% "http4s-ember-server" % "0.23.16",
   "org.http4s" %%% "http4s-dsl" % "0.23.16",
