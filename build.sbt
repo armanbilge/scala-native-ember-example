@@ -24,6 +24,8 @@ val isMacOs = {
   osName.exists(_.toLowerCase().contains("mac"))
 }
 
+nativeMode := "release-fast"
+nativeLTO := "thin"
 nativeConfig ~= { c =>
   if (isLinux) { // brew-installed s2n
     c.withLinkingOptions(c.linkingOptions :+ "-L/home/linuxbrew/.linuxbrew/lib")
