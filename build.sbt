@@ -21,7 +21,7 @@ nativeMode := "release-fast"
 nativeLTO := "thin"
 nativeConfig ~= { c =>
   c.withCompileOptions(c.compileOptions :+ "-I/home/linuxbrew/.linuxbrew/include")
-    .withLinkingOptions(c.linkingOptions ++ List("-L/home/linuxbrew/.linuxbrew/opt/s2n/lib", "/home/linuxbrew/.linuxbrew/lib/liburing.a"))
+    .withLinkingOptions(c.linkingOptions ++ List("-L/home/linuxbrew/.linuxbrew/opt/s2n/lib", "/home/linuxbrew/.linuxbrew/lib/liburing.a", "-L/home/linuxbrew/.linuxbrew/opt/gperftools/lib", "-lprofiler"))
 }
 envVars ++= {
   Map(
