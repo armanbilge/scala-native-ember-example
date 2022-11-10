@@ -21,7 +21,7 @@
             jdk.package = pkgs.jdk17;
             native.enable = true;
           };
-          packages = [ pkgs.s2n ];
+          packages = [ pkgs.s2n pkgs.gperftools pkgs.graphviz ];
         };
       }
     );

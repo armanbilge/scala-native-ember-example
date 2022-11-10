@@ -29,6 +29,7 @@ val isMacOs = {
 
 nativeMode := "release-fast"
 nativeLTO := "thin"
+nativeLinkingOptions += "-lprofiler"
 envVars ++= {
   Map("S2N_DONT_MLOCK" -> "1")
 }
